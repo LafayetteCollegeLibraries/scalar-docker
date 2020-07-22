@@ -15,6 +15,7 @@ services:
       SCALAR_DB_USERNAME: scalar
       SCALAR_DB_PASSWORD: scalar_db_password
       SCALAR_DB_DATABASE: scalar
+      SCALAR_ENCRYPTION_KEY: 'top secret shhhh'
     depends_on:
       - db
     restart: always
