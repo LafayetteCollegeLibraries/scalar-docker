@@ -10,6 +10,8 @@ services:
       context: .
     ports:
       - 4000:80
+    volumes:
+      - ./scalar-storage:/scalar-storage
     environment:
       SCALAR_DB_HOSTNAME: db
       SCALAR_DB_USERNAME: scalar
