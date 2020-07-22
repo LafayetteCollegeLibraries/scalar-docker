@@ -18,8 +18,7 @@ fi
 rm -rf "$install_directory/*"
 curl -sL "$archive_url" | tar -xz -C "$install_directory" --strip-components=1
 
-mkdir "$install_directory/uploads"
 chown -R "${APACHE_RUN_USER:-www-data}:${APACHE_RUN_GROUP:-www-data}" "$install_directory"
-
+sed -i'' -e 's/^#\(.*\%{DOCUMENT_ROOT}\/uploads\/.*\)/\1/g' "$install_directory/.htaccess"
 
 echo "Installed Scalar $VERSION to $install_directory"
