@@ -2,6 +2,7 @@ FROM php:7.2-apache
 LABEL maintainer="malantoa@lafayette.edu"
 
 ARG VERSION="latest"
+ARG CUSTOM_SETTINGS_FILE="./config/local_settings_custom.php"
 
 # enable rewrites early
 RUN a2enmod rewrite
@@ -28,6 +29,9 @@ RUN pecl install mcrypt-1.0.2 && docker-php-ext-enable mcrypt && pecl install im
 COPY --chown=1 scripts/ /scripts
 
 RUN /scripts/install-scalar.sh
+
+# need to copy custom config _after_ installing scalar
+COPY --chown=${APACHE_RUN_USER:-www-data}:${APACHE_RUN_GROUP:-www-data} ${CUSTOM_SETTINGS_FILE} /var/www/html/system/application/config/local_settings_custom.php
 
 ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
