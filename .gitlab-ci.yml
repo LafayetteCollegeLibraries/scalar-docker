@@ -1,0 +1,59 @@
+variables:
+    GIT_STRATEGY: clone
+    GIT_SUBMODULE_STRATEGY: none
+    PHP_VERSION: "7.3"
+    SCALAR_VERSION: "2.5.7"
+
+stages:
+    - code
+    - base
+
+core:
+    stage: code
+    image: 110459940082.dkr.ecr.us-east-1.amazonaws.com/lafayette/php73-wordpress:ac524617
+    before_script:
+        - git config --global url."https://github.com".insteadOf git://github.com
+        - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@git.lafayette.edu/".insteadOf "git@git.lafayette.edu:"
+    script:
+        - git clean -ffd
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - core/
+    variables:
+        GIT_SUBMODULE_STRATEGY: normal
+
+.build_docker:
+    image:
+        name: gcr.io/kaniko-project/executor:debug
+        entrypoint: [""]
+
+.build_docker_base:
+    extends: .build_docker
+    script:
+        - echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
+        - /kaniko/executor --context $CI_PROJECT_DIR/ --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg PHP_VERSION=$PHP_VERSION --build-arg CI_JOB_TOKEN --destination $ECR_REPOSITORY:$SCALAR_VERSION
+    only:
+        changes:
+            - core
+            - Dockerfile
+            - .gitlab-ci.yml
+            - scripts/install-scalar.sh
+
+build_docker_base_staging:
+    extends: .build_docker_base
+    stage: base
+    variables:
+        AWS_ACCESS_KEY_ID: '$AWS_ACCESS_KEY_ID_STAGING'
+        AWS_SECRET_ACCESS_KEY: '$AWS_SECRET_ACCESS_KEY_STAGING'
+        ECR_REPOSITORY: '$ECR_REPOSITORY_BASE_STAGING'
+
+build_docker_base_prod:
+    extends: .build_docker_base
+    stage: base
+    variables:
+        AWS_ACCESS_KEY_ID: '$AWS_ACCESS_KEY_ID_PROD'
+        AWS_SECRET_ACCESS_KEY: '$AWS_SECRET_ACCESS_KEY_PROD'
+        ECR_REPOSITORY: '$ECR_REPOSITORY_BASE_PROD'
+    only:
+        - primary
