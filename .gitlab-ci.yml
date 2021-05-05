@@ -2,7 +2,7 @@ variables:
     GIT_STRATEGY: clone
     GIT_SUBMODULE_STRATEGY: none
     PHP_VERSION: "7.3"
-    SCALAR_VERSION: "2.5.7_62ab7b1"
+    SCALAR_VERSION: "2.5.7_d181c7b"
 
 stages:
     - code
