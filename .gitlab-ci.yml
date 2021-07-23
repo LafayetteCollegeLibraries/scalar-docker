@@ -32,7 +32,7 @@ core:
     extends: .build_docker
     script:
         - echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
-        - /kaniko/executor --context $CI_PROJECT_DIR/ --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg PHP_VERSION=$PHP_VERSION --build-arg CI_JOB_TOKEN --destination $ECR_REPOSITORY:$SCALAR_VERSION
+        - /kaniko/executor --context $CI_PROJECT_DIR/ --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg PHP_VERSION=$PHP_VERSION --build-arg CI_JOB_TOKEN --build-arg PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT --destination $ECR_REPOSITORY:$SCALAR_VERSION
     only:
         changes:
             - core
@@ -47,6 +47,7 @@ build_docker_base_staging:
         AWS_ACCESS_KEY_ID: '$AWS_ACCESS_KEY_ID_STAGING'
         AWS_SECRET_ACCESS_KEY: '$AWS_SECRET_ACCESS_KEY_STAGING'
         ECR_REPOSITORY: '$ECR_REPOSITORY_BASE_STAGING'
+        PHP_MEMORY_LIMIT: '128M'
 
 build_docker_base_prod:
     extends: .build_docker_base
@@ -55,5 +56,6 @@ build_docker_base_prod:
         AWS_ACCESS_KEY_ID: '$AWS_ACCESS_KEY_ID_PROD'
         AWS_SECRET_ACCESS_KEY: '$AWS_SECRET_ACCESS_KEY_PROD'
         ECR_REPOSITORY: '$ECR_REPOSITORY_BASE_PROD'
+        PHP_MEMORY_LIMIT: '512M'
     only:
         - primary
