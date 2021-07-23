@@ -30,3 +30,6 @@ if ($config["storage_adapter"] == "Scalar_Storage_Adapter_S3") {
     "localDir" => "uploads"
   );
 }
+
+// prevent a buggy iframe
+$config["external_direct_hyperlink"] = getenv("SCALAR_EXTERNAL_DIRECT_HYPERLINK") ? ((bool) getenv("SCALAR_EXTERNAL_DIRECT_HYPERLINK")) : true;
