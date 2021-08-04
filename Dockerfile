@@ -29,9 +29,7 @@ RUN docker-php-ext-install -j$(nproc) iconv pdo pdo_mysql mysqli gd intl zip exi
 RUN pecl install mcrypt-1.0.2 && docker-php-ext-enable mcrypt && pecl install imagick && docker-php-ext-enable imagick
 
 # Add the ability to override the PHP's upload limits via build argument
-RUN echo "upload_max_filesize = ${PHP_MAX_UPLOAD_SIZE} \
-post_max_size = ${PHP_MAX_UPLOAD_SIZE} \
-memory_limit = ${PHP_MEMORY_LIMIT}" >> /usr/local/etc/php/conf.d/uploads.ini
+RUN echo "upload_max_filesize = ${PHP_MAX_UPLOAD_SIZE}\npost_max_size = ${PHP_MAX_UPLOAD_SIZE}\nmemory_limit = ${PHP_MEMORY_LIMIT}" >> /usr/local/etc/php/conf.d/uploads.ini
 
 COPY --chown=1 scripts/ /scripts
 COPY core/ /var/www/html
