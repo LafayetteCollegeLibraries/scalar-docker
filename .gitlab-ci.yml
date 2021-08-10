@@ -47,7 +47,7 @@ build_docker_base_staging:
         AWS_ACCESS_KEY_ID: '$AWS_ACCESS_KEY_ID_STAGING'
         AWS_SECRET_ACCESS_KEY: '$AWS_SECRET_ACCESS_KEY_STAGING'
         ECR_REPOSITORY: '$ECR_REPOSITORY_BASE_STAGING'
-        PHP_MEMORY_LIMIT: '128M'
+        PHP_MEMORY_LIMIT: '256M'
 
 build_docker_base_prod:
     extends: .build_docker_base
@@ -56,6 +56,6 @@ build_docker_base_prod:
         AWS_ACCESS_KEY_ID: '$AWS_ACCESS_KEY_ID_PROD'
         AWS_SECRET_ACCESS_KEY: '$AWS_SECRET_ACCESS_KEY_PROD'
         ECR_REPOSITORY: '$ECR_REPOSITORY_BASE_PROD'
-        PHP_MEMORY_LIMIT: '512M'
+        PHP_MEMORY_LIMIT: '1024M'
     only:
         - primary
