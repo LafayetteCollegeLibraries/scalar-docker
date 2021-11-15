@@ -37,3 +37,6 @@ $config["external_direct_hyperlink"] = getenv("SCALAR_EXTERNAL_DIRECT_HYPERLINK"
 if (getenv("SCALAR_REGISTRATION_KEY")) {
   $config["register_key"] = explode(",", getenv("SCALAR_REGISTRATION_KEY"));
 }
+
+// default smtp port to 587, which is used in the fargate stack
+$config['smtp_port'] = (getenv('SCALAR_SMTP_PORT') ? getenv('SCALAR_SMTP_PORT') : 587);
