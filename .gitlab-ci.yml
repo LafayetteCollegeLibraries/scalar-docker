@@ -35,6 +35,7 @@ core:
         - /kaniko/executor --context $CI_PROJECT_DIR/ --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg PHP_VERSION=$PHP_VERSION --build-arg CI_JOB_TOKEN --build-arg PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT --destination $ECR_REPOSITORY:$SCALAR_VERSION
     only:
         changes:
+            - config
             - core
             - Dockerfile
             - .gitlab-ci.yml
