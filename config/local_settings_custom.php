@@ -39,4 +39,5 @@ if (getenv("SCALAR_REGISTRATION_KEY")) {
 }
 
 // default smtp port to 587, which is used in the fargate stack
-$config['smtp_port'] = (getenv('SCALAR_SMTP_PORT') ? getenv('SCALAR_SMTP_PORT') : 587);
+$config["smtp_port"] = (getenv("SCALAR_SMTP_PORT") ? getenv("SCALAR_SMTP_PORT") : "587");
+$config['smtp_secure'] = (getenv("SCALAR_SMTP_SECURE") ? getenv("SCALAR_SMTP_SECURE") : "tls"); // or "ssl"
