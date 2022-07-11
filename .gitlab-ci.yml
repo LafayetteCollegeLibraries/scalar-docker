@@ -1,8 +1,7 @@
 variables:
     GIT_STRATEGY: clone
     GIT_SUBMODULE_STRATEGY: none
-    PHP_VERSION: "7.3"
-    SCALAR_VERSION: "2.6_0254a604"
+    SCALAR_VERSION: "2.6.2"
 
 stages:
     - code
@@ -39,7 +38,6 @@ core:
             - core/*
             - Dockerfile
             - .gitlab-ci.yml
-            - scripts/install-scalar.sh
 
 build_docker_base_staging:
     extends: .build_docker_base

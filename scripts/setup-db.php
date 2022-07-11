@@ -24,7 +24,6 @@ do {
 
 // test that the database exists
 $db_create_query = "CREATE DATABASE IF NOT EXISTS `" . $mysql->real_escape_string($database) . "`";
-                //  . " CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
 
 if (!$mysql->query($db_create_query)) {
   fwrite($stderr, "\n" . 'MySQL "CREATE DATABASE" Error: ' . $mysql->error . "\n");

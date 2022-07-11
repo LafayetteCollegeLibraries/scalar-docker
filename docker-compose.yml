@@ -11,13 +11,14 @@ services:
     ports:
       - 4000:80
     volumes:
-      - ./scalar-storage:/scalar-storage
+      - ./scalar-storage:/var/www/html/uploads
     environment:
-      SCALAR_DB_HOSTNAME: db
-      SCALAR_DB_USERNAME: scalar
-      SCALAR_DB_PASSWORD: scalar_db_password
-      SCALAR_DB_DATABASE: scalar
-      SCALAR_ENCRYPTION_KEY: 'top secret shhhh'
+      - SCALAR_DB_HOSTNAME=db
+      - SCALAR_DB_USERNAME=scalar
+      - SCALAR_DB_PASSWORD=scalar_db_password
+      - SCALAR_DB_DATABASE=scalar
+      - SCALAR_ENCRYPTION_KEY='top secret shhhh'
+      - PHP_MEMORY_LIMIT=1096M
     depends_on:
       - db
     restart: always
