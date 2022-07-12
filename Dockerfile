@@ -25,14 +25,15 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     && docker-php-ext-enable imagick \
     && a2enmod rewrite
 
-# Copy over the application code (core/), custom settings, and scripts
+# Copy over the application code (core/), patches (including custom settings), and scripts
 # TODO: I'm not entirely sure the APACHE_RUN_USER/GROUP variables exist on the container?
 COPY --chown=${APACHE_RUN_USER:-www-data}:${APACHE_RUN_GROUP:-www-data} core/ /var/www/html
-COPY --chown=${APACHE_RUN_USER:-www-data}:${APACHE_RUN_GROUP:-www-data} ./config/local_settings_custom.php /var/www/html/system/application/config
+COPY --chown=${APACHE_RUN_USER:-www-data}:${APACHE_RUN_GROUP:-www-data} patches/ /var/www/html
 COPY --chown=1 scripts/ /scripts
 
 WORKDIR /var/www/html
-VOLUME /var/www/html/uploads
+RUN  mkdir -p /var/www/html/uploads \
+     && chown -R ${APACHE_RUN_USER:-www-data}:${APACHE_RUN_GROUP:-www-data} /var/www/html/uploads
 
 # Putting ENV values down here so we can still use the cache after changing the defaults.
 # For now, we'll keep the build arguments in the interest of backwards compatability.
@@ -40,6 +41,11 @@ ARG PHP_MAX_UPLOAD_SIZE="100M"
 ARG PHP_MEMORY_LIMIT="256M"
 ENV PHP_MAX_UPLOAD_SIZE=$PHP_MAX_UPLOAD_SIZE
 ENV PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
+
+# Scalar ENV configuration (There are more, these are just the defaults we want to
+# to be explicit about using)
+ENV SCALAR_ENVIRONMENT=production
+ENV SCALAR_LOG_THRESHOLD=error
 
 ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]

@@ -11,7 +11,6 @@ switch ($storage_adapter) {
     $config["storage_adapter"] = "Scalar_Storage_Adapter_S3";
     break;
   default:
-    echo "unrecognized storage_adapter: $storage_adapter. falling back to Filesystem";
     $config["storage_adapter"] = "Scalar_Storage_Adapter_Filesystem";
 }
 

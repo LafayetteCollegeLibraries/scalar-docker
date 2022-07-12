@@ -3,6 +3,7 @@ version: '3.7'
 volumes:
   db:
   app:
+  app_logs:
 
 services:
   app:
@@ -13,12 +14,12 @@ services:
     volumes:
       - ./scalar-storage:/var/www/html/uploads
     environment:
+      - SCALAR_ENVIRONMENT=development
       - SCALAR_DB_HOSTNAME=db
       - SCALAR_DB_USERNAME=scalar
       - SCALAR_DB_PASSWORD=scalar_db_password
       - SCALAR_DB_DATABASE=scalar
       - SCALAR_ENCRYPTION_KEY='top secret shhhh'
-      - PHP_MEMORY_LIMIT=1096M
     depends_on:
       - db
     restart: always
@@ -28,9 +29,9 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      MYSQL_DATABASE: scalar
-      MYSQL_USER: scalar
-      MYSQL_PASSWORD: scalar_db_password
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=scalar
+      - MYSQL_USER=scalar
+      - MYSQL_PASSWORD=scalar_db_password
     command: ['--default-authentication-plugin=mysql_native_password']
     restart: always
