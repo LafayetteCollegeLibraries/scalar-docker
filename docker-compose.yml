@@ -2,17 +2,16 @@ version: '3.7'
 
 volumes:
   db:
-  app:
-  app_logs:
+  scalar:
 
 services:
-  app:
+  scalar:
     build:
       context: .
     ports:
       - 4000:80
     volumes:
-      - ./scalar-storage:/var/www/html/uploads
+      - scalar:/var/www/html/uploads
     environment:
       - SCALAR_ENVIRONMENT=development
       - SCALAR_DB_HOSTNAME=db
