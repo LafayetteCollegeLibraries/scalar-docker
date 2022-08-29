@@ -10,7 +10,7 @@ having to maintain a fork _and_ a submodule.
 ## Try it locally
 
 ```bash
-git clone https://git.lafayette.edu/dss/scalar-docker
+git clone --recursive https://git.lafayette.edu/dss/scalar-docker
 cd scalar-docker
 docker compose up -d --build
 ```
